@@ -6,7 +6,7 @@ export class ToDoList extends React.Component {
         this.props = props
         this.state = {
             inputValue: "",
-            tasks : ["Aprender React","Aprender WebPack","Aprender Babel"]
+            tasks : ["Aprender React","Aprender WebPack","Aprender Bbel"]
         }
     }
 
