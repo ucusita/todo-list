@@ -13,7 +13,7 @@ class ListaItemView extends React.Component {
     eliminarItem = (elementoBorrar) => {
         console.log("Eliminar item")
         const filtredData = this.state.listaItems.filter(item => item.id !== elementoBorrar);
-        this.setState({ listaItems : filtredData });
+        this.setState({ listaItems: filtredData });
     }
 
     render() {
@@ -28,14 +28,10 @@ class ListaItemView extends React.Component {
                                 <strong>Listado de Items</strong>
                             </h3>
                         </div>
-                        {this.state.listaItems.map((e) => <Item elemento={e} key={e.id} /> ) }
-                            
-                            {
-                                /* <div className="col-sm-6 col-lg-4" key={e.id}>
+                        {this.state.listaItems.map((e) =>
+
+                            <div className="col-sm-6 col-lg-4" key={e.id}>
                                 <div className="card-wrap">
-                                    <div className="image-wrap">
-                                        <img src="./images/item.jpg" alt="" />
-                                    </div>
                                     <div className="content-wrap">
                                         <h5 className="mbr-section-title card-title mbr-fonts-style align-center m-0 display-5">
                                             <strong>{e.puesto}</strong>
@@ -44,17 +40,17 @@ class ListaItemView extends React.Component {
                                             <strong>{e.empresa}</strong>
                                         </h6>
                                         <p className="card-text mbr-fonts-style align-center display-7">
-                                        {e.ciudad}
-                        </p>
+                                            {e.ciudad}
+                                        </p>
                                         <p className="card-text mbr-fonts-style align-center display-7">
-                                        {e.pais}
-                        </p>
-                                        <button onClick={this.eliminarItem}>Eliminar este ítem</button>
+                                            {e.pais}
+                                        </p>
+                                        <button onClick={() => { this.eliminarItem(e.id) }} className="btn btn-outline-danger btn-block display-4">Eliminar este ítem</button>
                                     </div>
                                 </div>
-                            </div> */
-                            }                        
-
+                            </div>
+                        )
+                        }
                     </div>
                 </div>
             </section>
