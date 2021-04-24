@@ -1,0 +1,26 @@
+[
+    {
+        "id": 0,
+        "puesto":"Gerente",
+        "empresa":"Corporation Google",
+        "pais":"Escandinavia",
+        "ciudad":"Reikjavic",
+        "libre":true
+    },
+    {
+        "id": 1,
+        "puesto":"Jefe de sección",
+        "empresa":"Corporation Microsoft",
+        "pais":"Francia",
+        "ciudad":"París",
+        "libre":true
+    },
+    {
+        "id": 2,
+        "puesto":"CEO",
+        "empresa":"Corporation IBM",
+        "pais":"Rusia",
+        "ciudad":"Moscú",
+        "libre":true
+    }
+]
