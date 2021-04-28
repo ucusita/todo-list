@@ -14,7 +14,7 @@ class ListaItemAdd extends React.Component {
     verMensaje : false
   }
 
-  procesaBotonSubmit = (e) => {
+  /* procesaBotonSubmit = (e) => {
     e.preventDefault();
     console.log("Boton enviar");
     console.log(this.listadeitems);
@@ -35,7 +35,7 @@ class ListaItemAdd extends React.Component {
       this.setState({ listadeitems : this.props.listadeitems.concat(nuevoItem) });
     }
     return
-  }
+  } */
 
   render() {
     return (

@@ -2,7 +2,7 @@ import React from 'react';
 
 import './estilositems.css';
 import items from './items.json'
-//import Item from './item'
+import Item from './item'
 
 class ListaItemView extends React.Component {
 
@@ -16,8 +16,31 @@ class ListaItemView extends React.Component {
         this.setState({ listaItems: filtredData });
     }
 
+    procesaBotonSubmit = (e) => {
+        e.preventDefault();
+        console.log("Boton enviar");
+        console.log(this.listadeitems);
+        console.log(this.puesto.current.value)
+        if (this.puesto.current.value === '' || this.empresa.current.value === '' || this.ciudad.current.value === '' || this.pais.current.value === '') {
+          this.setState({verMensaje: true})
+          console.log('Alguno es nulo')
+          return
+        } else {
+          console.log("Agregar contenido")
+          const nuevoItem = {
+            "id": this.props.listadeitems.length+1,
+            "puesto":this.puesto.current.value,
+            "empresa":this.empresa.current.value,
+            "pais":this.ciudad.current.value,
+            "ciudad":this.pais.current.value,
+          };
+          this.setState({ listadeitems : this.props.listadeitems.concat(nuevoItem) });
+        }
+        return
+      }
+
     render() {
-        console.log(items);
+        console.log(this.state.listaItems);
         return (
 
             <section className="team1 cid-svshQR3Kzv" id="ListaItemsView">
@@ -30,7 +53,9 @@ class ListaItemView extends React.Component {
                         </div>
                         {this.state.listaItems.map((e) =>
 
-                            <div className="col-sm-6 col-lg-4" key={e.id}>
+                            <Item key={e.id} data={e} eliminar={ this.eliminarItem }/>,
+
+                            {/* <div className="col-sm-6 col-lg-4" key={e.id}>
                                 <div className="card-wrap">
                                     <div className="content-wrap">
                                         <h5 className="mbr-section-title card-title mbr-fonts-style align-center m-0 display-5">
@@ -48,7 +73,7 @@ class ListaItemView extends React.Component {
                                         <button onClick={() => { this.eliminarItem(e.id) }} className="btn btn-outline-danger btn-block display-4">Eliminar este ítem</button>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         )
                         }
                     </div>
