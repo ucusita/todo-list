@@ -23,6 +23,7 @@ class ListaItemView extends React.Component {
         if (e.puesto === '' || e.empresa === '' || e.ciudad === '' || e.pais === '') {
             this.setState({ verMensaje: true })
             console.log('Alguno es nulo')
+            alert('Algun campo es nulo')
             return
         } else {
             console.log("Agregar contenido")
@@ -34,6 +35,7 @@ class ListaItemView extends React.Component {
                 "ciudad": e.pais,
             };
             this.setState({ listaItems: this.state.listaItems.concat(nuevoItem) });
+            alert("Agregado correctamente")
         }
         return
     }
