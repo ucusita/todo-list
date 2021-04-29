@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import Menu from './components/menu/Menu';
-//import ListaItemAdd from './components/items/listaItemAdd';
+import ListaItemAdd from './components/items/listaItemAdd';
 import ListaItemView from './components/items/listaItemView';
 import Footer from './components/footer/Footer';
 //import reportWebVitals from './reportWebVitals';
@@ -25,7 +25,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Menu />
     <App />
-    {/* <ListaItemAdd fnAgregar = { fnAgregar }/> */}
+    <ListaItemAdd/>
     <ListaItemView />
     <Footer />
   </React.StrictMode>,  
