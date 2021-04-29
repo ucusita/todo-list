@@ -1,7 +1,7 @@
 import React from 'react';
 import './estilositems.css';
 
-class ListaItemAdd extends React.Component {
+export default class ListaItemAdd extends React.Component {
 
   state = {
     puesto: '',
@@ -29,9 +29,10 @@ class ListaItemAdd extends React.Component {
     this.setState({ pais: e.target.value });
   };
 
-  handleOnSubmit = e =>{
-    console.log(e)
-    //this.props.submit(e)
+  handleOnSubmit = e => {
+    e.preventDefault()
+    console.log(this.state)
+    this.props.submit(this.state)
   }
 
   render() {
@@ -47,7 +48,7 @@ class ListaItemAdd extends React.Component {
             </div>
             <div className="row justify-content-center mt-4">
               <div className="col-lg-8 mx-auto mbr-form" data-form-type="formoid">
-                <form className="mbr-form form-with-styler mx-auto" onSubmit={this.procesaBotonSubmit}>
+                <form className="mbr-form form-with-styler mx-auto" onSubmit={this.handleOnSubmit.bind(this.state)}>
                   <p className="mbr-text mbr-fonts-style align-center mb-4 display-7">
                     Por favor no deje campos vacíos.
                             </p>
@@ -86,7 +87,7 @@ class ListaItemAdd extends React.Component {
                         className="form-control" />
                     </div>
                     <div className="col-auto mbr-section-btn align-center">
-                      <button type="submit" onClick={this.handleOnSubmit.bind(this)} className="btn btn-primary display-4">Agregar ítem</button>
+                      <button type="submit" className="btn btn-primary display-4">Agregar ítem</button>
                     </div>
                   </div>
                 </form>
@@ -99,5 +100,3 @@ class ListaItemAdd extends React.Component {
   }
 
 }
-
-export default ListaItemAdd;

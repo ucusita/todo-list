@@ -8,9 +8,9 @@ export default class Item extends React.Component {
     }
 
     render() {
-        console.log(this.props.id);
+        //console.log(this.props.data.id);
         return (
-            <div className="col-sm-6 col-lg-4" key={this.props.id}>
+            <div className="col-sm-6 col-lg-4" key={this.props.data.id}>
                 <div className="card-wrap">
                     <div className="content-wrap">
                         <h5 className="mbr-section-title card-title mbr-fonts-style align-center m-0 display-5">
