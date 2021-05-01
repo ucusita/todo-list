@@ -5,11 +5,7 @@ En este caso, refactoricé totalmente para que estén **OO** y funcionando acord
 
 # Dificultades
 
-Para esto he implementado **3 clases** fundamentales:
-
- - [ ] Clase Item
- - [ ] Clase ListaItemView
- - [ ] Clase ListaItemAdd
+Los asincronismos en el setState hacen dificultoso el mantenimiento actualizado de los campos select dinámicamente.
 
 Presentado por:
 **Marcelo Roldán**
