@@ -10,18 +10,16 @@ export default class ListaItemAdd extends React.Component {
     ciudad: '',
     verMensaje: false,
     paises: JSON.parse(localStorage.getItem('Paises')) ? JSON.parse(localStorage.getItem('Paises')) : [],
-    ciudades: JSON.parse(localStorage.getItem('Ciudades')),
-    ciudadesfiltradas: JSON.parse(localStorage.getItem('Ciudades'))
+    ciudades: JSON.parse(localStorage.getItem('Ciudades')) ? JSON.parse(localStorage.getItem('Ciudades')) : [],
+    empresas: JSON.parse(localStorage.getItem('Empresas')) ? JSON.parse(localStorage.getItem('Empresas')) : [],
+    ciudadesfiltradas: JSON.parse(localStorage.getItem('Ciudades')),
+    empresasfiltradas: JSON.parse(localStorage.getItem('Empresas'))
   }
 
 
   handlePuestoInput = e => {
     this.setState({ verMensaje: false });
     this.setState({ puesto: e.target.value });
-  };
-  handleEmpresaInput = e => {
-    this.setState({ verMensaje: false });
-    this.setState({ empresa: e.target.value });
   };
 
   handlePaisSelect = e => {
@@ -31,20 +29,53 @@ export default class ListaItemAdd extends React.Component {
     console.log(filtredData);
     this.setState({ ciudadesfiltradas: filtredData }, () => {
       console.log(this.state.ciudadesfiltradas, 'ciudadesfiltradas');
+      this.handleCiudadSelect(e)
     });
-    console.log(this.state.ciudadesfiltradas);
+
   };
+
   handleCiudadSelect = e => {
     this.setState({ verMensaje: false });
     this.setState({ ciudad: e.target.value });
+    var filtredData = [];
+    console.log(this.state.empresas)
+    if (this.state.empresas !== "") {
+      filtredData = this.state.empresas.filter(item => item.Ciudad === e.target.value);
+    } else {
+      filtredData = { "Empresa": "No hay cargadas aún" }
+    }
+    console.log(filtredData);
+    this.setState({ empresasfiltradas: filtredData }, () => {
+      console.log(this.state.empresasfiltradas, 'empresasfiltradas');
+    });
   };
+
+  handleEmpresaSelect = e => {
+    console.log(e.target.value)
+    this.setState({ verMensaje: false });
+    this.setState({ empresa: e.target.value }, () => {
+      var filtredData = [];
+      console.log(this.state.empresa, this.state.empresas)
+      if (this.state.empresas !== "") {
+        filtredData = this.state.empresas.filter(item => item.Ciudad === this.state.ciudad);
+      } else {
+        filtredData = { "Empresa": "No hay cargadas aún" }
+      }
+      console.log(filtredData);
+      this.setState({ empresasfiltradas: filtredData }, () => {
+        console.log(this.state.empresasfiltradas, 'empresasfiltradas');
+      });
+    });
+    console.log(this.state.empresasfiltradas);
+  };
+
 
   handleOnSubmit = e => {
     e.preventDefault()
-    if (e.puesto === '' || e.empresa === '' || e.ciudad === '' || e.pais === '') {
+    console.log("this state", this.state)
+    if (this.state.puesto === '' || this.state.empresa === '' || this.state.ciudad === '' || this.state.pais === '') {
       this.setState({ verMensaje: true })
       console.log('Alguno es nulo')
-      alert('Algun campo es nulo')
       return
     }
     console.log(this.state)
@@ -81,13 +112,6 @@ export default class ListaItemAdd extends React.Component {
                         placeholder="puesto"
                         className="form-control" />
                     </div>
-                    <div className="col-lg-12 col-md-12 col-sm-12 form-group">
-                      <input type="text"
-                        placeholder="empresa"
-                        value={this.state.empresa}
-                        onChange={this.handleEmpresaInput}
-                        className="form-control" />
-                    </div>
                     <div data-for="pais" className="col-lg-12 col-md-12 col-sm-12 form-group">
                       <select className="col-md col-12 form-control"
                         value={this.state.pais}
@@ -103,6 +127,15 @@ export default class ListaItemAdd extends React.Component {
                         onChange={this.handleCiudadSelect}>
                         {this.state.ciudadesfiltradas.map((e) =>
                           <option key={e.Ciudad} value={e.Ciudad}>{e.Ciudad}</option>
+                        )}
+                      </select>
+                    </div>
+                    <div data-for="empresa" className="col-lg-12 col-md-12 col-sm-12 form-group">
+                      <select className="col-md col-12 form-control"
+                        value={this.state.empresa}
+                        onChange={this.handleEmpresaSelect}>
+                        {this.state.empresasfiltradas.map((e) =>
+                          <option key={e.Empresa} value={e.Empresa}>{e.Empresa}</option>
                         )}
                       </select>
                     </div>

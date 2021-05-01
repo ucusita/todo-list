@@ -4,9 +4,9 @@ import './../../styles/mbr-additional.css'
 export default class CiudadesAdd extends React.Component {
 
   state = {
-    pais: 'Elija',
+    pais: '',
     ciudad: '',
-    verMensaje: '',
+    verMensaje: false,
     paises: JSON.parse(localStorage.getItem('Paises')) ? JSON.parse(localStorage.getItem('Paises')) : [],
     ciudades: JSON.parse(localStorage.getItem('Ciudades')) ? JSON.parse(localStorage.getItem('Ciudades')) : []
   }
@@ -24,6 +24,11 @@ export default class CiudadesAdd extends React.Component {
   handleOnSubmit = e => {
     e.preventDefault()
     console.log("Estad  inicial", this.state);
+    if (this.state.ciudad === '' || this.state.pais === '') {
+      this.setState({ verMensaje: true })
+      console.log('Alguno es nulo')
+      return
+    }
     var nuevaciudad = { "Pais": this.state.pais, "Ciudad": this.state.ciudad }
     this.state.ciudades.push(nuevaciudad)
     localStorage.setItem("Ciudades", JSON.stringify(this.state.ciudades))
@@ -44,11 +49,6 @@ export default class CiudadesAdd extends React.Component {
             <div className="row justify-content-center">
               <div className="col-lg-8 mx-auto mbr-form" data-form-type="formoid">
                 <form onSubmit={this.handleOnSubmit.bind(this.state)} className="mbr-form form-with-styler" data-form-title="Form Name">
-                  <div className="row">
-                    {this.state.verMensaje ? (
-                      <div hidden="hidden" data-form-alert-danger className="alert alert-danger col-12">Oops...! No parece haber ingresado nada</div>
-                    ) : null}
-                  </div>
                   <div className="dragArea row">
                     <div className="col-12">
                       <h1 className="mbr-section-title mb-4 display-2">
@@ -57,11 +57,19 @@ export default class CiudadesAdd extends React.Component {
                     <div className="col-12">
                       <p className="mbr-text mbr-fonts-style mb-5 display-7">Elija el país del lado izquierdo e ingrese la nueva ciudad.</p>
                     </div>
+                    <div className="row">
+                      {this.state.verMensaje ? (
+                        <div className="row">
+                          <div className="alert alert-danger col-12">Oops...! parece haber un campo vacío!</div>
+                        </div>
+                      ) : null}
+                    </div>
                     <div className="col-md col-12 form-group" data-for="name">
-                      <select className="col-md col-12 form-control"
+                      <select className="col-md col-12 form-control" 
+                        defaultValue={this.state.pais[0]}
                         value={this.state.pais}
-                        defaultValue='Elija'
                         onChange={this.handlePaisSelect}>
+                        <option value=''>Elija un país</option>
                         {this.state.paises.map((e) =>
                           <option key={e} value={e}>{e}</option>
                         )}

@@ -5,6 +5,7 @@ import ListaItemAdd from './components/items/listaItemAdd';
 import Footer from './components/footer/Footer';
 import Menu from './components/menu/Menu';
 import CiudadesAdd from './components/paises/CiudadesAdd';
+import EmpresasAdd from './components/empresas/EmpresasAdd';
 
 import {
   Switch,
@@ -65,6 +66,9 @@ export default class App extends React.Component {
           </Route>
           <Route path="/Ciudades">
             <CiudadesAdd />
+          </Route>
+          <Route path="/Empresas">
+            <EmpresasAdd />
           </Route>
         </Switch>,
         <Footer />

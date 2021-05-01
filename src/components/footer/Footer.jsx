@@ -7,9 +7,8 @@ class Footer extends React.Component {
  
     return (
  
-        <footer className="container">
-            <p className="float-right"><a href="index.html">Subir</a></p>
-            <p>&copy; {(new Date().getFullYear())} Actividad 1, Módulo React.</p>
+        <footer className="container">            
+            <p>&copy; {(new Date().getFullYear())} Actividad 2, Módulo React.</p>
         </footer>
  
     )
