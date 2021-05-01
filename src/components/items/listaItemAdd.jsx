@@ -8,7 +8,10 @@ export default class ListaItemAdd extends React.Component {
     empresa: '',
     pais: '',
     ciudad: '',
-    verMensaje: false
+    verMensaje: false,
+    paises: JSON.parse(localStorage.getItem('Paises')) ? JSON.parse(localStorage.getItem('Paises')) : [],
+    ciudades: JSON.parse(localStorage.getItem('Ciudades')),
+    ciudadesfiltradas: JSON.parse(localStorage.getItem('Ciudades'))
   }
 
 
@@ -20,19 +23,32 @@ export default class ListaItemAdd extends React.Component {
     this.setState({ verMensaje: false });
     this.setState({ empresa: e.target.value });
   };
-  handleCiudadInput = e => {
-    this.setState({ verMensaje: false });
-    this.setState({ ciudad: e.target.value });
-  };
-  handlePaisInput = e => {
+
+  handlePaisSelect = e => {
     this.setState({ verMensaje: false });
     this.setState({ pais: e.target.value });
+    const filtredData = this.state.ciudades.filter(item => item.Pais === e.target.value);
+    console.log(filtredData);
+    this.setState({ ciudadesfiltradas: filtredData }, () => {
+      console.log(this.state.ciudadesfiltradas, 'ciudadesfiltradas');
+    });
+    console.log(this.state.ciudadesfiltradas);
+  };
+  handleCiudadSelect = e => {
+    this.setState({ verMensaje: false });
+    this.setState({ ciudad: e.target.value });
   };
 
   handleOnSubmit = e => {
     e.preventDefault()
+    if (e.puesto === '' || e.empresa === '' || e.ciudad === '' || e.pais === '') {
+      this.setState({ verMensaje: true })
+      console.log('Alguno es nulo')
+      alert('Algun campo es nulo')
+      return
+    }
     console.log(this.state)
-    this.props.submit(this.state)
+    this.props.agregarItem(this.state)
   }
 
   render() {
@@ -72,19 +88,23 @@ export default class ListaItemAdd extends React.Component {
                         onChange={this.handleEmpresaInput}
                         className="form-control" />
                     </div>
-                    <div data-for="ciudad" className="col-lg-12 col-md-12 col-sm-12 form-group">
-                      <input type="text"
-                        placeholder="ciudad"
-                        value={this.state.ciudad}
-                        onChange={this.handleCiudadInput}
-                        className="form-control" />
-                    </div>
                     <div data-for="pais" className="col-lg-12 col-md-12 col-sm-12 form-group">
-                      <input type="text"
-                        placeholder="pais"
+                      <select className="col-md col-12 form-control"
                         value={this.state.pais}
-                        onChange={this.handlePaisInput}
-                        className="form-control" />
+                        onChange={this.handlePaisSelect}>
+                        {this.state.paises.map((e, indice) =>
+                          <option key={indice} value={e}>{e}</option>
+                        )}
+                      </select>
+                    </div>
+                    <div data-for="ciudad" className="col-lg-12 col-md-12 col-sm-12 form-group">
+                      <select className="col-md col-12 form-control"
+                        value={this.state.ciudad}
+                        onChange={this.handleCiudadSelect}>
+                        {this.state.ciudadesfiltradas.map((e) =>
+                          <option key={e.Ciudad} value={e.Ciudad}>{e.Ciudad}</option>
+                        )}
+                      </select>
                     </div>
                     <div className="col-auto mbr-section-btn align-center">
                       <button type="submit" className="btn btn-primary display-4">Agregar ítem</button>

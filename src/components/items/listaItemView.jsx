@@ -1,50 +1,25 @@
 import React from 'react';
 
 import './estilositems.css';
-import items from './items.json'
 import Item from './item'
-import ListaItemAdd from './listaItemAdd';
 
-class ListaItemView extends React.Component {
+export default class ListaItemView extends React.Component {
 
     state = {
-        listaItems: items,
+        listaItems: this.props.items, //items,
         verMensaje: false
     }
 
     eliminarItem = (elementoBorrar) => {
-        console.log("Eliminar item")
         const filtredData = this.state.listaItems.filter(item => item.id !== elementoBorrar);
         this.setState({ listaItems: filtredData });
-    }
-
-    procesaBotonSubmit = (e) => {        
-        console.log("Boton enviar",e);
-        if (e.puesto === '' || e.empresa === '' || e.ciudad === '' || e.pais === '') {
-            this.setState({ verMensaje: true })
-            console.log('Alguno es nulo')
-            alert('Algun campo es nulo')
-            return
-        } else {
-            console.log("Agregar contenido")
-            const nuevoItem = {
-                "id": this.state.listaItems.length + 1,
-                "puesto": e.puesto,
-                "empresa": e.empresa,
-                "pais": e.ciudad,
-                "ciudad": e.pais,
-            };
-            this.setState({ listaItems: this.state.listaItems.concat(nuevoItem) });
-            alert("Agregado correctamente")
-        }
-        return
+        this.props.eliminarItem(elementoBorrar);
     }
 
     render() {
         console.log("states", this.state.listaItems);
         return (
             <>
-                <ListaItemAdd submit={this.procesaBotonSubmit} />
                 <section className="team1 cid-svshQR3Kzv" id="ListaItemsView">
                     <div className="container">
                         <div className="row justify-content-center">
@@ -66,5 +41,3 @@ class ListaItemView extends React.Component {
     }
 
 }
-
-export default ListaItemView;
