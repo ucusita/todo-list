@@ -4,34 +4,37 @@ import './../../styles/mbr-additional.css'
 export default class CiudadesAdd extends React.Component {
 
   state = {
-    pais: '',
+    pais: 'Elija',
     ciudad: '',
     verMensaje: '',
-    paises: JSON.parse(localStorage.getItem('paises')) ? JSON.parse(localStorage.getItem('paises')) : []
+    paises: JSON.parse(localStorage.getItem('Paises')) ? JSON.parse(localStorage.getItem('Paises')) : [],
+    ciudades: JSON.parse(localStorage.getItem('Ciudades')) ? JSON.parse(localStorage.getItem('Ciudades')) : []
   }
 
 
-  handleCiudadSelect = e => {
-    this.setState({ verMensaje: false });
-    this.setState({ ciudad: e.target.value });
-  };
-  handlePaisInput = e => {
+  handlePaisSelect = e => {
     this.setState({ verMensaje: false });
     this.setState({ pais: e.target.value });
+  };
+  handleCiudadInput = e => {
+    this.setState({ verMensaje: false });
+    this.setState({ ciudad: e.target.value });
   };
 
   handleOnSubmit = e => {
     e.preventDefault()
-    console.log(this.state)
-    if (this.state.pais !== "") {
-      this.state.paises.push(this.state.pais)
-    }
-    alert("País agregado")
+    console.log("Estad  inicial", this.state);
+    var nuevaciudad = { "Pais": this.state.pais, "Ciudad": this.state.ciudad }
+    this.state.ciudades.push(nuevaciudad)
+    localStorage.setItem("Ciudades", JSON.stringify(this.state.ciudades))
+    console.log(JSON.stringify(this.state.ciudades))
+    var a = localStorage.getItem("Ciudades")
+    console.log(a)
+    this.setState({ ciudad: '' })
 
   }
 
   render() {
-    console.log("CiudadesAdd",this.state.paises)
     return (
 
       <>
@@ -55,18 +58,14 @@ export default class CiudadesAdd extends React.Component {
                       <p className="mbr-text mbr-fonts-style mb-5 display-7">Elija el país del lado izquierdo e ingrese la nueva ciudad.</p>
                     </div>
                     <div className="col-md col-12 form-group" data-for="name">
-                      <select value={this.state.value} onChange={this.handleCiudadSelect} >
-                        {this.state.paises.map((e) => 
-                          <option value={e.ciudad}>{e.ciudad}</option>
-                        )
-                        }
-                        <option value="mango">Mango</option>
-                      </select>
-                      <input type="text"
+                      <select className="col-md col-12 form-control"
                         value={this.state.pais}
-                        onChange={this.handlePaisInput}
-                        placeholder="país"
-                        className="form-control" />
+                        defaultValue='Elija'
+                        onChange={this.handlePaisSelect}>
+                        {this.state.paises.map((e) =>
+                          <option key={e} value={e}>{e}</option>
+                        )}
+                      </select>
                     </div>
                     <div className="col-md col-12 form-group" data-for="email">
                       <input type="text"

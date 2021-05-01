@@ -26,6 +26,10 @@ export default class PaisesAdd extends React.Component {
       this.state.paises.push(this.state.pais)
       localStorage.setItem("Paises", JSON.stringify(this.state.paises))
       console.log(this.state)
+      console.log(JSON.stringify(this.state.paises))
+      var a=localStorage.getItem("Paises")
+      console.log(a)
+      this.setState({pais : ''})
     } else {
       //Vacio
     }
@@ -34,7 +38,6 @@ export default class PaisesAdd extends React.Component {
   }
 
   render() {
-    console.log("PaisesAdd",this.state.paises)
     return (      
       <>
         <section className="form1 cid-sw58p9UJED mbr-fullscreen mbr-parallax-background" id="form1-3">
