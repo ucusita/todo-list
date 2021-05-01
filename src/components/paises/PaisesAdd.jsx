@@ -2,11 +2,11 @@ import React from 'react';
 import './../../styles/mbr-additional.css'
 
 export default class PaisesAdd extends React.Component {
-  
+
   state = {
     pais: '',
     verMensaje: '',
-    paises: JSON.parse(localStorage.getItem('paises'))
+    paises: JSON.parse(localStorage.getItem('paises')) ? JSON.parse(localStorage.getItem('paises')) : []
   }
 
   handleCiudadInput = e => {
@@ -20,31 +20,29 @@ export default class PaisesAdd extends React.Component {
 
   handleOnSubmit = e => {
     e.preventDefault()
-    console.log(this.state)
     if (this.state.pais !== "") {
-      if (this.state.paises==="") {
-        this.setState({paises : {}})
-      }else{
-        this.setState({paises : {"pais": ''}})
-        this.state.paises.push(this.state.pais)                
-      }
+      console.log(this.state, this.state.paises)
+      console.log("Lo inicializo");
+      this.state.paises.push(this.state.pais)
+      localStorage.setItem("Paises", JSON.stringify(this.state.paises))
       console.log(this.state)
-      localStorage.setItem("Paises", JSON.stringify(this.state.paises)) 
+    } else {
+      //Vacio
     }
     //alert("País agregado")
 
   }
 
   render() {
-    return (
-
+    console.log("PaisesAdd",this.state.paises)
+    return (      
       <>
         <section className="form1 cid-sw58p9UJED mbr-fullscreen mbr-parallax-background" id="form1-3">
           <div className="mbr-overlay" style={{ opacity: '0.5', backgroundColor: 'rgb(255, 255, 255)' }} />
           <div className="align-center container">
             <div className="row justify-content-center">
               <div className="col-lg-8 mx-auto mbr-form" data-form-type="formoid">
-                <form onSubmit={ this.handleOnSubmit.bind(this.state)} className="mbr-form form-with-styler">
+                <form onSubmit={this.handleOnSubmit.bind(this.state)} className="mbr-form form-with-styler">
                   <div className="row">
                     {this.state.verMensaje ? (
                       <div hidden="hidden" data-form-alert-danger className="alert alert-danger col-12">Oops...! No parece haber ingresado nada</div>

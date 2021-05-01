@@ -1,26 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from "react-router-dom";
+
 import './index.css';
 import App from './App';
 import Menu from './components/menu/Menu';
-import ListaItemView from './components/items/listaItemView';
-import PaisesAdd from './components/paises/PaisesAdd';
-import Footer from './components/footer/Footer';
+//import ListaItemView from './components/items/listaItemView';
+//import PaisesAdd from './components/paises/PaisesAdd';
+//import Footer from './components/footer/Footer';
 //import reportWebVitals from './reportWebVitals';
+//import CiudadesAdd from './components/paises/CiudadesAdd';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'; // Archivo CSS de Bootstrap 4 
 import '../node_modules/bootstrap/dist/js/bootstrap.min.js'; // Archivo Javascript de Bootstrap 4
-import CiudadesAdd from './components/paises/CiudadesAdd';
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Menu />
-    <App />
-    <PaisesAdd />
-    <CiudadesAdd />
-    <ListaItemView />
-    <Footer />
-  </React.StrictMode>,  
+    <Router>,
+    <Menu />,
+    <App />,
+    </Router>,
   document.getElementById('root')
 );
 

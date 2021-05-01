@@ -1,5 +1,16 @@
 import React from 'react'
+
+import {
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
+
 import './../../styles/mbr-additional.css'
+import ListaItemView from '../../components/items/listaItemView';
+import ListaItemAdd from '../../components/items/listaItemAdd';
+import PaisesAdd from '../../components/paises/PaisesAdd';
+import CiudadesAdd from '../../components/paises/CiudadesAdd';
 
 export default class Menu extends React.Component {
 
@@ -16,25 +27,21 @@ export default class Menu extends React.Component {
                     <div className="collapse navbar-collapse" id="navbarCollapse">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item active">
-                                <a className="nav-link" href="index.html">Inicio <span className="sr-only">(current)</span></a>
+                                <Link to="/">Home</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#ListaItemAdd">Agregar Item</a>
+                                <Link to="/ListaItemAdd">Agregar item</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#ListaItemsView">Ver Lista</a>
+                                <Link to="/ListaItemView">Ver items</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#ListaItemsView">Países</a>
+                                <Link to="/Paises">Países</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="index.html">Ciudades</a>
+                                <Link to="/Ciudades">Ciudades</Link>
                             </li>
                         </ul>
-                        <form className="form-inline mt-2 mt-md-0">
-                            <input className="form-control mr-sm-2" type="text" placeholder="Buscar" aria-label="Buscar" />
-                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-                        </form>
                     </div>
 
                 </nav>
@@ -51,6 +58,24 @@ export default class Menu extends React.Component {
                         </div>
                     </div>
                 </section>
+                <Switch>
+                    <Route exact path="/">
+                        <Menu />
+                    </Route>
+                    <Route path="/ListaItemAdd">
+                        <ListaItemAdd />
+                    </Route>
+                    <Route path="/ListaItemsView">
+                        <ListaItemView />
+                    </Route>
+                    <Route path="/Paises">
+                        <PaisesAdd />
+                    </Route>
+                    <Route path="/Ciudades">
+                        <CiudadesAdd />
+                    </Route>
+                </Switch>
+
             </>
         )
 
