@@ -1,8 +1,19 @@
 import React from 'react';
 import './../../styles/mbr-additional.css'
 import axios from 'axios';
+import Country from './CountryView'
 
 export default class CountriesAdd extends React.Component {
+
+  getCountries = async () => {
+    console.log('getting countries');
+    try {
+      const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/countries")
+      this.setState({countries : res.data });
+    } catch (err) {
+      alert('Ocurrió un error ⚠');
+    }
+  };
 
   postCountry = async (countrie) => {
     const configRequest = {
@@ -20,7 +31,6 @@ export default class CountriesAdd extends React.Component {
   };
 
   deleteCountry = async (id) => {
-    console.log(id + "api")
     const configRequest = {
       method: 'DELETE',
       url: 'https://api-fake-pilar-tecno.herokuapp.com/countries/' + id,
@@ -35,17 +45,15 @@ export default class CountriesAdd extends React.Component {
     }
   };
 
-  async componentDidMount() {
-    const res = await axios.get('https://api-fake-pilar-tecno.herokuapp.com/countries');
-    this.setState({ countries: res.data });
-    console.log(res);
-  }
+  async componentDidMount() {  this.getCountries();  }
 
   state = {
     pais: '',
     verMensaje: false,
     countries: []
   }
+
+  handleEliminarCall = (e) => this.deleteCountry(e).then((resD) => this.getCountries() );
 
   handlePaisInput = e => {
     this.setState({ verMensaje: false });
@@ -56,13 +64,13 @@ export default class CountriesAdd extends React.Component {
     e.preventDefault()
     if (this.state.pais === '') {
       this.setState({ verMensaje: true });
-      console.log('Alguno es nulo');
+      console.log('mmm, el país es nulo');
     } else {
       this.postCountry(this.state.pais).then((res) =>
-      this.setState({
-        countries: [...this.state.countries, res],
-      })
-    );
+        this.setState({
+          countries: [...this.state.countries, res],
+        })
+      );
       this.setState({ pais: '' });
     }
 
@@ -103,6 +111,22 @@ export default class CountriesAdd extends React.Component {
                   </div>
                 </form>
               </div>
+            </div>
+          </div>
+        </section>
+        
+        <section className="team1 cid-svshQR3Kzv" id="ListaItemsView">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <h3 className="align-center">
+                  <strong>Listado de Países</strong>
+                </h3>
+              </div>
+              {this.state.countries.map((e) =>
+                <Country key={e.id} data={e} eliminar={this.handleEliminarCall.bind(this.state)} actualizar={this.getCountries.bind()} />,
+              )
+              }
             </div>
           </div>
         </section>

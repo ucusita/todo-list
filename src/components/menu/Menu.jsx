@@ -27,10 +27,10 @@ export default class Menu extends React.Component {
                                 <Link to="/ListaItemView"> Ver items </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/Paises"> Países </Link>
+                                <Link to="/Countries"> Países </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/Ciudades"> Ciudades </Link>
+                                <Link to="/Cities"> Ciudades </Link>
                             </li>
                             <li className="nav-item">
                                 <Link to="/Empresas"> Empresas </Link>

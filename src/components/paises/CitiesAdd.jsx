@@ -1,16 +1,84 @@
 import React from 'react';
-import './../../styles/mbr-additional.css'
+import './../../styles/mbr-additional.css';
+import axios from 'axios';
+import City from './CityView';
 
-export default class CiudadesAdd extends React.Component {
+export default class CitiesAdd extends React.Component {
+
+  getCountries = async () => {
+    const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/countries")
+    this.setState({ paises: res.data });
+  };
+
+  getCiudadPais = async () => {
+    try {
+      const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/places?_expand=countrie")
+      return res.data
+    } catch (err) {
+      alert('Ocurrió un error ⚠');
+    }
+  };
+
+  getCiudades = async () => {
+    const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/places")
+    this.setState({ ciudades: res.data });
+  }
+  getCiudad = async () => {
+    try {
+      const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/places")
+      return res.data
+    } catch (err) {
+      alert('Ocurrió un error ⚠');
+    }
+  };
+
+  postCiudad = async (data) => {
+    const configRequest = {
+      method: 'post',
+      url: 'https://api-fake-pilar-tecno.herokuapp.com/places',
+      data: data
+    }
+    try {
+      const res = await axios(configRequest)
+      return res.data
+    } catch (err) {
+      alert('Ocurrió un error ⚠');
+
+    }
+  };
+
+  deleteCiudad = async (id) => {
+    console.log(id + "api")
+    const configRequest = {
+      method: 'DELETE',
+      url: 'https://api-fake-pilar-tecno.herokuapp.com/places/' + id,
+
+    }
+    try {
+      const res = await axios(configRequest)
+      return res.data
+    } catch (err) {
+      return (console.log('error'))
+
+    }
+  };
+
 
   state = {
     pais: '',
     ciudad: '',
     verMensaje: false,
-    paises: JSON.parse(localStorage.getItem('Paises')) ? JSON.parse(localStorage.getItem('Paises')) : [],
+    paises: [],
     ciudades: JSON.parse(localStorage.getItem('Ciudades')) ? JSON.parse(localStorage.getItem('Ciudades')) : []
   }
 
+  componentDidMount() {
+    this.getCountries();
+    this.getCiudades();
+  }
+
+  //Actualizar para la ciudad
+  handleEliminarCall = (e) => this.deleteCountry(e).then((resD) => this.getCountries() );
 
   handlePaisSelect = e => {
     this.setState({ verMensaje: false });
@@ -65,13 +133,13 @@ export default class CiudadesAdd extends React.Component {
                       ) : null}
                     </div>
                     <div className="col-md col-12 form-group" data-for="name">
-                      <select className="col-md col-12 form-control" 
+                      <select className="col-md col-12 form-control"
                         defaultValue={this.state.pais[0]}
                         value={this.state.pais}
                         onChange={this.handlePaisSelect}>
                         <option value=''>Elija un país</option>
                         {this.state.paises.map((e) =>
-                          <option key={e} value={e}>{e}</option>
+                          <option key={e.id} value={e.id}>{e.name}</option>
                         )}
                       </select>
                     </div>
@@ -86,6 +154,22 @@ export default class CiudadesAdd extends React.Component {
                   </div>
                 </form>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="team1 cid-svshQR3Kzv" id="ListaItemsView">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <h3 className="align-center">
+                  <strong>Listado de Ciudades</strong>
+                </h3>
+              </div>
+              {this.state.ciudades.map((e) =>
+                <City key={e.id} data={e} eliminar={this.handleEliminarCall.bind(this.state)} />,
+              )
+              }
             </div>
           </div>
         </section>

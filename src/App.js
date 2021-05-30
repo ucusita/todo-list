@@ -1,11 +1,10 @@
 import './App.css';
 import ListaItemView from './components/items/listaItemView';
-//import PaisesAdd from './components/paises/PaisesAdd';
 import CountriesAdd from './components/paises/CountriesAdd';
 import ListaItemAdd from './components/items/listaItemAdd';
 import Footer from './components/footer/Footer';
 import Menu from './components/menu/Menu';
-import CiudadesAdd from './components/paises/CiudadesAdd';
+import CitiesAdd from './components/paises/CitiesAdd';
 
 import EmpresasAdd from './components/empresas/EmpresasAdd';
 
@@ -61,11 +60,11 @@ export default class App extends React.Component {
           <Route path="/ListaItemView">
             <ListaItemView items={this.state.listaItems} eliminarItem={this.eliminarItem} />
           </Route>
-          <Route path="/Paises">
+          <Route path="/Countries">
             <CountriesAdd />
           </Route>
-          <Route path="/Ciudades">
-            <CiudadesAdd />
+          <Route path="/Cities">
+            <CitiesAdd />
           </Route>
           <Route path="/Empresas">
             <EmpresasAdd />
