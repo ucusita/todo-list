@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class City extends React.Component {
+export default class Empresa extends React.Component {
 
     eliminarCall = (e) =>{
         console.log("Eliminar ", this.props.data.id);
@@ -16,9 +16,9 @@ export default class City extends React.Component {
                             {this.props.data.id}: <strong>{this.props.data.name}</strong>
                         </h5>
                         <p className="card-text mbr-fonts-style align-center">
-                            PaísId: {this.props.data.countrieId}
+                            PlaceId: {this.props.data.placeId}
                         </p>
-                        <button onClick={this.eliminarCall.bind(this.props.data.id)} className="btn btn-outline-danger btn-block display-4">Eliminar esta ciudad</button>
+                        <button onClick={this.eliminarCall.bind(this.props.data.id)} className="btn btn-outline-danger btn-block display-4">Eliminar esta empresa</button>
                     </div>
                 </div>
             </div>

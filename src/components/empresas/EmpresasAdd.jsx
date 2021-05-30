@@ -1,61 +1,100 @@
 import React from 'react';
-import './../../styles/mbr-additional.css'
+import './../../styles/mbr-additional.css';
+import axios from 'axios';
+import Empresa from './EmpresaView'
 
 export default class EmpresasAdd extends React.Component {
+  //***** Area de API ******/
+  getCountries = async () => {
+    const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/countries")
+    this.setState({ paises: res.data });
+  };
 
+  getCiudades = async () => {
+    const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/places")
+    this.setState({ ciudades: res.data });
+  }
+
+  getCiudadesFiltradas = async () => {
+    const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/places")
+    this.setState({ ciudades: res.data });
+  }
+
+  getEmpresas = async () => {
+    const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/organizations")
+    this.setState({ empresas: res.data });
+  };
+
+  postEmpresa = async (data) => {
+    console.log("Data en postEmpresa:", data);
+    console.log("Detalles:", data.empresa, data.idciudad);
+    const configRequest = {
+      method: 'post',
+      url: 'https://api-fake-pilar-tecno.herokuapp.com/organizations',
+      data: {
+        name: data.empresa,
+        placeId: data.idciudad
+      }
+    }
+    const res = await axios(configRequest)
+    return res.data
+  };
+
+  deleteEmpresa = async (id) => {
+    const configRequest = {
+      method: 'DELETE',
+      url: 'https://api-fake-pilar-tecno.herokuapp.com/organizations/' + id,
+    }
+    const res = await axios(configRequest)
+    return res.data
+  };
+  //***** Fin Area de APIs *******/
   state = {
-    pais: 'Elija',
-    ciudad: '',
+    idpais: 'Elija',
+    idciudad: '',
     empresa: '',
     verMensaje: '',
-    paises: JSON.parse(localStorage.getItem('Paises')) ? JSON.parse(localStorage.getItem('Paises')) : [],
-    ciudades: JSON.parse(localStorage.getItem('Ciudades')),
-    ciudadesfiltradas: JSON.parse(localStorage.getItem('Ciudades')),
-    empresas: JSON.parse(localStorage.getItem('Empresas')) ? JSON.parse(localStorage.getItem('Empresas')) : []
+    paises: [],
+    ciudades: [],
+    ciudadesfiltradas: [],
+    empresas: []
   }
 
   componentDidMount() {
-    console.log(typeof this.state.paises[0])
-    if (typeof this.state.paises[0]==='undefined') {
-      this.setState({pais: ['No hay cargados aún']})
-    }else{
-      this.setState({pais: this.state.paises[0]})
-    }    
+    this.getCountries();
+    this.getCiudades();
+    this.getEmpresas();
   }
 
+  //********   Handlers  *******
+  handleEliminarCall = (e) => this.deleteEmpresa(e).then(() => this.componentDidMount());
 
   handlePaisSelect = e => {
     this.setState({ verMensaje: false });
-    this.setState({ pais: e.target.value });
-    const filtredData = this.state.ciudades.filter(item => item.Pais === e.target.value);
+    this.setState({ idpais: e.target.value });
+    const filtredData = this.state.ciudades.filter(item => item.countrieId === e.target.value);
     console.log(filtredData);
     this.setState({ ciudadesfiltradas: filtredData }, () => {
       console.log(this.state.ciudadesfiltradas, 'ciudadesfiltradas');
     });
-    console.log(this.state.ciudadesfiltradas);
   };
   handleCiudadSelect = e => {
     this.setState({ verMensaje: false });
-    this.setState({ ciudad: e.target.value });
+    this.setState({ idciudad: e.target.value });
   };
-
   handleEmpresaInput = e => {
     this.setState({ verMensaje: false });
     this.setState({ empresa: e.target.value });
   };
-
   handleOnSubmit = e => {
     e.preventDefault()
-    console.log("Estad  inicial", this.state);
-    var nuevaempresa = { "Pais": this.state.pais, "Ciudad": this.state.ciudad, "Empresa": this.state.empresa }
-    this.state.empresas.push(nuevaempresa)
-    localStorage.setItem("Empresas", JSON.stringify(this.state.empresas))
-    console.log(JSON.stringify(this.state.empresas))
-    var a = localStorage.getItem("Empresas")
-    console.log(a)
-    this.setState({ empresa: '' })
-
+    console.log("Estado inicial", this.state);
+    let nuevaempresa = { "idciudad": this.state.idciudad, "empresa": this.state.empresa }
+    this.postEmpresa(nuevaempresa).then((res) =>
+      this.componentDidMount()
+    );
   }
+  //********  Fin Handlers  *******
 
   render() {
     return (
@@ -80,24 +119,27 @@ export default class EmpresasAdd extends React.Component {
                     <div className="col-12">
                       <p className="mbr-text mbr-fonts-style mb-5 display-7">Elija el país y la ciudad a la que pertenece la empresa.</p>
                     </div>
+                    {/* Select pais */}
                     <div className="col-md col-12 form-group" data-for="name">
                       <select className="col-md col-12 form-control"
-                        value={this.state.pais}
+                        value={this.state.idpais}
                         onChange={this.handlePaisSelect}>
                         {this.state.paises.map((e) =>
-                          <option key={e} value={e}>{e}</option>
+                          <option key={e.id} value={e.id}>{e.name}</option>
                         )}
                       </select>
                     </div>
+                    {/* Select city */}
                     <div className="col-md col-12 form-group" data-for="name">
-                    <select className="col-md col-12 form-control"
-                        value={this.state.ciudad}
+                      <select className="col-md col-12 form-control"
+                        value={this.state.idciudad}
                         onChange={this.handleCiudadSelect}>
                         {this.state.ciudadesfiltradas.map((e) =>
-                          <option key={e.Ciudad} value={e.Ciudad}>{e.Ciudad}</option>
+                          <option key={e.id} value={e.id}>{e.name}</option>
                         )}
                       </select>
                     </div>
+                    {/* Input Organization */}
                     <div className="col-md col-12 form-group" data-for="email">
                       <input type="text"
                         value={this.state.empresa}
@@ -109,6 +151,21 @@ export default class EmpresasAdd extends React.Component {
                   </div>
                 </form>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="team1 cid-svshQR3Kzv" id="ListaItemsView">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <h3 className="align-center">
+                  <strong>Listado de Empresas</strong>
+                </h3>
+              </div>
+              {this.state.empresas.map((e) =>
+                <Empresa key={e.id.toString()} data={e} eliminar={this.handleEliminarCall.bind(this.state)} />,
+              )}
             </div>
           </div>
         </section>

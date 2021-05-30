@@ -4,39 +4,27 @@ import axios from 'axios';
 import City from './CityView';
 
 export default class CitiesAdd extends React.Component {
-
+  //***** Area de API ******/
   getCountries = async () => {
     const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/countries")
     this.setState({ paises: res.data });
-  };
-
-  getCiudadPais = async () => {
-    try {
-      const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/places?_expand=countrie")
-      return res.data
-    } catch (err) {
-      alert('Ocurrió un error ⚠');
-    }
   };
 
   getCiudades = async () => {
     const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/places")
     this.setState({ ciudades: res.data });
   }
-  getCiudad = async () => {
-    try {
-      const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/places")
-      return res.data
-    } catch (err) {
-      alert('Ocurrió un error ⚠');
-    }
-  };
 
-  postCiudad = async (data) => {
+  postCity = async (data) => {
+    console.log("Data en postCity:", data);
+    console.log("Detalles:", data.ciudad, data.countrieId);
     const configRequest = {
       method: 'post',
       url: 'https://api-fake-pilar-tecno.herokuapp.com/places',
-      data: data
+      data: {
+        name: data.ciudad,
+        countrieId: data.countrieId
+      }
     }
     try {
       const res = await axios(configRequest)
@@ -47,8 +35,7 @@ export default class CitiesAdd extends React.Component {
     }
   };
 
-  deleteCiudad = async (id) => {
-    console.log(id + "api")
+  deleteCity = async (id) => {
     const configRequest = {
       method: 'DELETE',
       url: 'https://api-fake-pilar-tecno.herokuapp.com/places/' + id,
@@ -62,14 +49,14 @@ export default class CitiesAdd extends React.Component {
 
     }
   };
-
+  //***** Fin Area de APIs *******
 
   state = {
-    pais: '',
+    idpais: '',
     ciudad: '',
     verMensaje: false,
     paises: [],
-    ciudades: JSON.parse(localStorage.getItem('Ciudades')) ? JSON.parse(localStorage.getItem('Ciudades')) : []
+    ciudades: []
   }
 
   componentDidMount() {
@@ -77,12 +64,12 @@ export default class CitiesAdd extends React.Component {
     this.getCiudades();
   }
 
-  //Actualizar para la ciudad
-  handleEliminarCall = (e) => this.deleteCountry(e).then((resD) => this.getCountries() );
+  //********   Handlers  *******
+  handleEliminarCall = (e) => this.deleteCity(e).then((resD) => this.componentDidMount());
 
   handlePaisSelect = e => {
     this.setState({ verMensaje: false });
-    this.setState({ pais: e.target.value });
+    this.setState({ idpais: e.target.value });
   };
   handleCiudadInput = e => {
     this.setState({ verMensaje: false });
@@ -91,22 +78,18 @@ export default class CitiesAdd extends React.Component {
 
   handleOnSubmit = e => {
     e.preventDefault()
-    console.log("Estad  inicial", this.state);
-    if (this.state.ciudad === '' || this.state.pais === '') {
+    console.log("Estado  inicial", this.state);
+    if (this.state.ciudad === '' || this.state.idpais === '') {
       this.setState({ verMensaje: true })
       console.log('Alguno es nulo')
-      return
     }
-    var nuevaciudad = { "Pais": this.state.pais, "Ciudad": this.state.ciudad }
-    this.state.ciudades.push(nuevaciudad)
-    localStorage.setItem("Ciudades", JSON.stringify(this.state.ciudades))
-    console.log(JSON.stringify(this.state.ciudades))
-    var a = localStorage.getItem("Ciudades")
-    console.log(a)
-    this.setState({ ciudad: '' })
-
+    let data = { ciudad: this.state.ciudad, countrieId: this.state.idpais };
+    this.postCity(data).then((res) =>
+      this.componentDidMount()
+    );
   }
-
+  //********  Fin Handlers  *******
+  
   render() {
     return (
 
@@ -132,10 +115,11 @@ export default class CitiesAdd extends React.Component {
                         </div>
                       ) : null}
                     </div>
+
                     <div className="col-md col-12 form-group" data-for="name">
                       <select className="col-md col-12 form-control"
-                        defaultValue={this.state.pais[0]}
-                        value={this.state.pais}
+                        defaultValue={this.state.paises[0]}
+                        value={this.state.idpais}
                         onChange={this.handlePaisSelect}>
                         <option value=''>Elija un país</option>
                         {this.state.paises.map((e) =>
@@ -143,6 +127,7 @@ export default class CitiesAdd extends React.Component {
                         )}
                       </select>
                     </div>
+
                     <div className="col-md col-12 form-group" data-for="email">
                       <input type="text"
                         value={this.state.ciudad}
@@ -167,12 +152,13 @@ export default class CitiesAdd extends React.Component {
                 </h3>
               </div>
               {this.state.ciudades.map((e) =>
-                <City key={e.id} data={e} eliminar={this.handleEliminarCall.bind(this.state)} />,
+                <City key={e.id.toString()} data={e} eliminar={this.handleEliminarCall.bind(this.state)} />,
               )
               }
             </div>
           </div>
         </section>
+
       </>
     );
   }
