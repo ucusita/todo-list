@@ -1,15 +1,6 @@
-# Mi Proyecto #2 - Orientado a Objetos 100%!
+# Mi Proyecto - Trabajo Final del Módulo
 
-Estos son otra versión de los archivos de la  **Actividad 1**. Se trata de la versión **Basado en clases**.
-En este caso, refactoricé totalmente para que estén **OO** y funcionando acorde a lo solicitado en la tarea.
-
-# Dificultades
-
-Para esto he implementado **3 clases** fundamentales:
-
- - [ ] Clase Item
- - [ ] Clase ListaItemView
- - [ ] Clase ListaItemAdd
+Basado en Axios y API de https://api-fake-pilar-tecno.herokuapp.com/
 
 Presentado por:
 **Marcelo Roldán**

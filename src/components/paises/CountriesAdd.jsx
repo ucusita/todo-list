@@ -1,12 +1,50 @@
 import React from 'react';
 import './../../styles/mbr-additional.css'
+import axios from 'axios';
 
-export default class PaisesAdd extends React.Component {
+export default class CountriesAdd extends React.Component {
+
+  postCountry = async (countrie) => {
+    const configRequest = {
+      method: 'post',
+      url: 'https://api-fake-pilar-tecno.herokuapp.com/countries',
+      data: { name: countrie }
+    }
+    try {
+      const res = await axios(configRequest)
+      return res.data
+    } catch (err) {
+      alert('Ocurrió un error ⚠');
+
+    }
+  };
+
+  deleteCountry = async (id) => {
+    console.log(id + "api")
+    const configRequest = {
+      method: 'DELETE',
+      url: 'https://api-fake-pilar-tecno.herokuapp.com/countries/' + id,
+
+    }
+    try {
+      const res = await axios(configRequest)
+      return res.data
+    } catch (err) {
+      return (console.log('error'))
+
+    }
+  };
+
+  async componentDidMount() {
+    const res = await axios.get('https://api-fake-pilar-tecno.herokuapp.com/countries');
+    this.setState({ countries: res.data });
+    console.log(res);
+  }
 
   state = {
     pais: '',
     verMensaje: false,
-    paises: JSON.parse(localStorage.getItem('paises')) ? JSON.parse(localStorage.getItem('paises')) : []
+    countries: []
   }
 
   handlePaisInput = e => {
@@ -16,21 +54,16 @@ export default class PaisesAdd extends React.Component {
 
   handleOnSubmit = e => {
     e.preventDefault()
-    console.log('Alguno es nulo',this.state.pais)
     if (this.state.pais === '') {
-      this.setState({ verMensaje: true })
-      console.log('Alguno es nulo')
-      return
+      this.setState({ verMensaje: true });
+      console.log('Alguno es nulo');
     } else {
-      console.log(this.state, typeof this.state.paises)
-      console.log("Lo inicializo");
-      this.state.paises.push(this.state.pais)
-      localStorage.setItem("Paises", JSON.stringify(this.state.paises))
-      console.log(this.state)
-      console.log(JSON.stringify(this.state.paises))
-      var a = localStorage.getItem("Paises")
-      console.log(a)
-      this.setState({ pais: '' })
+      this.postCountry(this.state.pais).then((res) =>
+      this.setState({
+        countries: [...this.state.countries, res],
+      })
+    );
+      this.setState({ pais: '' });
     }
 
   }

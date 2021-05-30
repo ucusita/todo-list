@@ -1,10 +1,12 @@
 import './App.css';
 import ListaItemView from './components/items/listaItemView';
-import PaisesAdd from './components/paises/PaisesAdd';
+//import PaisesAdd from './components/paises/PaisesAdd';
+import CountriesAdd from './components/paises/CountriesAdd';
 import ListaItemAdd from './components/items/listaItemAdd';
 import Footer from './components/footer/Footer';
 import Menu from './components/menu/Menu';
 import CiudadesAdd from './components/paises/CiudadesAdd';
+
 import EmpresasAdd from './components/empresas/EmpresasAdd';
 
 import {
@@ -40,12 +42,10 @@ export default class App extends React.Component {
       "puesto": e.puesto,
       "empresa": e.empresa,
       "pais": e.ciudad,
-      "ciudad": e.pais,
+      "ciudad": e.pais
     };
     this.setState({ listaItems: this.state.listaItems.concat(nuevoItem) });
-    alert("Agregado correctamente")
-
-    return
+    alert("Agregado correctamente");
   }
 
   render() {
@@ -62,7 +62,7 @@ export default class App extends React.Component {
             <ListaItemView items={this.state.listaItems} eliminarItem={this.eliminarItem} />
           </Route>
           <Route path="/Paises">
-            <PaisesAdd />
+            <CountriesAdd />
           </Route>
           <Route path="/Ciudades">
             <CiudadesAdd />
