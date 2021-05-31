@@ -45,7 +45,7 @@ export default class ListaItemView extends React.Component {
             method: 'DELETE',
             url: 'https://api-fake-pilar-tecno.herokuapp.com/jobs/' + id,
         }
-        const res = await axios(configRequest);
+        await axios(configRequest);
         this.getJobs();
     };
     //***** Fin Area de APIs *******/

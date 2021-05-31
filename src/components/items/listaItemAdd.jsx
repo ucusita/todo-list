@@ -13,18 +13,28 @@ export default class ListaItemAdd extends React.Component {
     const res = await axios.get('https://api-fake-pilar-tecno.herokuapp.com/jobs?_expand=organization')
     this.setState({ jobs: res.data });
   };
+  postJob = async (data) => {
+    console.log("Data en postJob:", data);
+    const configRequest = {
+      method: 'post',
+      url: 'https://api-fake-pilar-tecno.herokuapp.com/jobs',
+      data: {
+        position: data.position,
+        description: data.description,
+        organizationId: data.organizationId
+      }
+    }
+    await axios(configRequest)
+    this.getEmpresas();
+  };
   //***** Fin Area de APIs *******/
 
   state = {
-    idpais: 'Elija',
-    idciudad: '',
     empresa: '',
     jobs: [],
+    puesto: '',
     description: '',
-    paises: [],
-    ciudades: [],
     empresas: [],
-    empresasfiltradas: [],
     listaItems: [],
     verMensaje: false
   }
@@ -66,13 +76,14 @@ export default class ListaItemAdd extends React.Component {
   handleOnSubmit = e => {
     e.preventDefault()
     console.log("this state", this.state)
-    if (this.state.puesto === '' || this.state.empresa === '' || this.state.ciudad === '' || this.state.pais === '') {
+    if (this.state.puesto === '' || this.state.empresa === '') {
       this.setState({ verMensaje: true })
-      console.log('Alguno es nulo')
+      console.log('Algo es nulo')
       return
     }
-    console.log(this.state)
-    this.props.agregarItem(this.state)
+    console.log(this.state);
+    let newjob = { "position": this.state.puesto, "description": this.state.description, "organizationId": this.state.empresa }
+    this.postJob(newjob);
   }
 
   render() {

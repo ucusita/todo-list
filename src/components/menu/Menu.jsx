@@ -33,7 +33,7 @@ export default class Menu extends React.Component {
                                 <Link to="/Cities"> Ciudades </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/Empresas"> Empresas </Link>
+                                <Link to="/Empresas"> Organizations </Link>
                             </li>
                         </ul>
                     </div>

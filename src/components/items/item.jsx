@@ -12,11 +12,17 @@ export default class Item extends React.Component {
     }
 
     filtraLugar = () => {
-        let ciudad= this.props.dataPlaces.filter(place => place.id.toString() === this.props.dataitem.organization.placeId)
-        this.setState({placeCity : ciudad[0].name});
-        let idpais = ciudad[0].countrieId;
-        let pais= this.props.dataCountries.filter(place => Number(place.id) === Number(idpais));
-        this.setState({placeCountry : pais[0].name});
+        console.log("dataPlaces",this.props.dataPlaces);
+        let ciudad= this.props.dataPlaces.filter(place => Number(place.id) === Number(this.props.dataitem.organization.placeId))
+        console.log("ciudad:",ciudad, "place: ", this.props.dataitem.organization.placeId);
+        try{
+            this.setState({placeCity : ciudad[0].name});
+            let idpais = ciudad[0].countrieId;
+            let pais= this.props.dataCountries.filter(place => Number(place.id) === Number(idpais));
+            this.setState({placeCountry : pais[0].name});
+        }catch(err){
+            console.log("No pudo obtener alguna relación");
+        }
     }
 
     eliminarCall = (e) => {
