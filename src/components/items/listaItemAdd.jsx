@@ -1,53 +1,46 @@
 import React from 'react';
 import './estilositems.css';
+import axios from 'axios';
 
 export default class ListaItemAdd extends React.Component {
 
+  getEmpresas = async () => {
+    const res = await axios.get("https://api-fake-pilar-tecno.herokuapp.com/organizations")
+    this.setState({ empresas: res.data });
+  };
+
+  getJobs = async () => {
+    const res = await axios.get('https://api-fake-pilar-tecno.herokuapp.com/jobs?_expand=organization')
+    this.setState({ jobs: res.data });
+  };
+  //***** Fin Area de APIs *******/
+
   state = {
-    puesto: '',
+    idpais: 'Elija',
+    idciudad: '',
     empresa: '',
-    pais: '',
-    ciudad: '',
-    verMensaje: false,
-    paises: JSON.parse(localStorage.getItem('Paises')) ? JSON.parse(localStorage.getItem('Paises')) : [],
-    ciudades: JSON.parse(localStorage.getItem('Ciudades')) ? JSON.parse(localStorage.getItem('Ciudades')) : [],
-    empresas: JSON.parse(localStorage.getItem('Empresas')) ? JSON.parse(localStorage.getItem('Empresas')) : [],
-    ciudadesfiltradas: JSON.parse(localStorage.getItem('Ciudades')),
-    empresasfiltradas: JSON.parse(localStorage.getItem('Empresas'))
+    jobs: [],
+    description: '',
+    paises: [],
+    ciudades: [],
+    empresas: [],
+    empresasfiltradas: [],
+    listaItems: [],
+    verMensaje: false
   }
 
+  componentDidMount() {    
+        this.getEmpresas();
+  }
 
   handlePuestoInput = e => {
     this.setState({ verMensaje: false });
     this.setState({ puesto: e.target.value });
   };
 
-  handlePaisSelect = e => {
+  handleDescriptionInput = e => {
     this.setState({ verMensaje: false });
-    this.setState({ pais: e.target.value });
-    const filtredData = this.state.ciudades.filter(item => item.Pais === e.target.value);
-    console.log(filtredData);
-    this.setState({ ciudadesfiltradas: filtredData }, () => {
-      console.log(this.state.ciudadesfiltradas, 'ciudadesfiltradas');
-      this.handleCiudadSelect(e)
-    });
-
-  };
-
-  handleCiudadSelect = e => {
-    this.setState({ verMensaje: false });
-    this.setState({ ciudad: e.target.value });
-    var filtredData = [];
-    console.log(this.state.empresas)
-    if (this.state.empresas !== "") {
-      filtredData = this.state.empresas.filter(item => item.Ciudad === e.target.value);
-    } else {
-      filtredData = { "Empresa": "No hay cargadas aún" }
-    }
-    console.log(filtredData);
-    this.setState({ empresasfiltradas: filtredData }, () => {
-      console.log(this.state.empresasfiltradas, 'empresasfiltradas');
-    });
+    this.setState({ description: e.target.value });
   };
 
   handleEmpresaSelect = e => {
@@ -90,7 +83,7 @@ export default class ListaItemAdd extends React.Component {
           <div className="container">
             <div className="mbr-section-head">
               <h3 className="align-center">
-                <strong>Agregar ítem</strong>
+                <strong>Agregar job</strong>
               </h3>
             </div>
             <div className="row justify-content-center mt-4">
@@ -105,6 +98,19 @@ export default class ListaItemAdd extends React.Component {
                     </div>
                   ) : null}
                   <div className="dragArea row">
+
+                    {/* Select Organization */}
+                    <div data-for="empresa" className="col-lg-12 col-md-12 col-sm-12 form-group">
+                      <select className="col-md col-12 form-control"
+                        value={this.state.idempresa}
+                        onChange={this.handleEmpresaSelect}>
+                        {this.state.empresas.map((e) =>
+                          <option key={e.id} value={e.id}>{e.name}</option>
+                        )}
+                      </select>
+                    </div>
+
+                    {/* Input Job */}
                     <div className="col-lg-12 col-md-12 col-sm-12 form-group">
                       <input type="text"
                         value={this.state.puesto}
@@ -112,35 +118,17 @@ export default class ListaItemAdd extends React.Component {
                         placeholder="puesto"
                         className="form-control" />
                     </div>
-                    <div data-for="pais" className="col-lg-12 col-md-12 col-sm-12 form-group">
-                      <select className="col-md col-12 form-control"
-                        value={this.state.pais}
-                        onChange={this.handlePaisSelect}>
-                        {this.state.paises.map((e, indice) =>
-                          <option key={indice} value={e}>{e}</option>
-                        )}
-                      </select>
+                    {/* Input Job */}
+                    <div className="col-lg-12 col-md-12 col-sm-12 form-group">
+                      <input type="text"
+                        value={this.state.description}
+                        onChange={this.handleDescriptionInput}
+                        placeholder="descripcion"
+                        className="form-control" />
                     </div>
-                    <div data-for="ciudad" className="col-lg-12 col-md-12 col-sm-12 form-group">
-                      <select className="col-md col-12 form-control"
-                        value={this.state.ciudad}
-                        onChange={this.handleCiudadSelect}>
-                        {this.state.ciudadesfiltradas.map((e) =>
-                          <option key={e.Ciudad} value={e.Ciudad}>{e.Ciudad}</option>
-                        )}
-                      </select>
-                    </div>
-                    <div data-for="empresa" className="col-lg-12 col-md-12 col-sm-12 form-group">
-                      <select className="col-md col-12 form-control"
-                        value={this.state.empresa}
-                        onChange={this.handleEmpresaSelect}>
-                        {this.state.empresasfiltradas.map((e) =>
-                          <option key={e.Empresa} value={e.Empresa}>{e.Empresa}</option>
-                        )}
-                      </select>
-                    </div>
+
                     <div className="col-auto mbr-section-btn align-center">
-                      <button type="submit" className="btn btn-primary display-4">Agregar ítem</button>
+                      <button type="submit" className="btn btn-primary display-4">Agregar job</button>
                     </div>
                   </div>
                 </form>

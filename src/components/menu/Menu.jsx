@@ -21,10 +21,10 @@ export default class Menu extends React.Component {
                                 <Link to="/"> Inicio </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/ListaItemAdd"> Agregar item </Link>
+                                <Link to="/ListaItemAdd"> Agregar Job </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/ListaItemView"> Ver items </Link>
+                                <Link to="/ListaItemView"> Ver Jobs </Link>
                             </li>
                             <li className="nav-item">
                                 <Link to="/Countries"> Países </Link>
